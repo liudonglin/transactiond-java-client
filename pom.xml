@@ -28,6 +28,7 @@
         <h2database.version>1.4.197</h2database.version>
         <hikari-cp.version>3.1.0</hikari-cp.version>
         <commons-dbutils.version>1.7</commons-dbutils.version>
+        <netflix.feign.core.verison>8.18.0</netflix.feign.core.verison>
     </properties>
 
     <parent>
@@ -149,6 +150,12 @@
                 <groupId>commons-dbutils</groupId>
                 <artifactId>commons-dbutils</artifactId>
                 <version>${commons-dbutils.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.netflix.feign</groupId>
+                <artifactId>feign-core</artifactId>
+                <version>${netflix.feign.core.verison}</version>
             </dependency>
 
         </dependencies>

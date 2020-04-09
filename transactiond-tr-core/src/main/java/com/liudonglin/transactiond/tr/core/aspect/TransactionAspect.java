@@ -41,8 +41,8 @@ public class TransactionAspect implements Ordered {
 
     @Around("lcnTransactionPointcut() && !tccTransactionPointcut()")
     public Object runWithLcnTransaction(ProceedingJoinPoint point) throws Throwable {
-        //将执行分布式事务的方法放在DTXInfo对象里面
-        DTXInfo dtxInfo = DTXInfo.getFromCache(point);
+        //将执行分布式事务的方法放在TransactionMethodInfo对象里面
+        TransactionMethodInfo dtxInfo = TransactionMethodInfo.getFromCache(point);
         //调用方法，正式开启(或继续，这里取决于是否是事务发起方)分布式事务
         return interceptor.runTransaction(dtxInfo, point::proceed);
     }

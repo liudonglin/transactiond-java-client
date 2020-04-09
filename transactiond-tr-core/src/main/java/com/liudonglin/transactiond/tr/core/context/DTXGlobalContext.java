@@ -1,6 +1,7 @@
 package com.liudonglin.transactiond.tr.core.context;
 
 import com.liudonglin.transactiond.tr.core.config.DTXClientConfig;
+import com.liudonglin.transactiond.tr.core.tracing.TracingContext;
 import com.liudonglin.transactiond.tr.core.transaction.lcn.LcnConnectionProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,34 +34,27 @@ public class DTXGlobalContext {
         throw new RuntimeException("non exists lcn connection");
     }
 
-    public TxContext txContext(String groupId) {
+    public DTXContext txContext(String groupId) {
         return attachmentCache.attachment(groupId + txContextKeySuffix);
     }
 
-    public TxContext txContext() {
-        //todo 远程请求tm
-        return txContext("1");
+    public DTXContext txContext() {
+        return txContext(TracingContext.tracing().groupId());
     }
 
     public boolean hasTxContext() {
-        //todo 远程请求tm
-        return false;
+        return TracingContext.tracing().hasGroup() && txContext(TracingContext.tracing().groupId()) != null;
     }
 
-    public TxContext startTx() {
-        //todo 远程请求tm,事务发起方判断
-        Boolean hasGroup = false;
-        //todo 远程请求tm
-        String groupId = "1";
-
-        TxContext txContext = new TxContext(groupId,hasGroup);
-
+    public DTXContext startTx() {
+        DTXContext txContext = new DTXContext();
+        // 事务发起方判断
+        txContext.setDtxStart(!TracingContext.tracing().hasGroup());
         if (txContext.isDtxStart()) {
-            //todo 远程创建事务组
-            //TracingContext.tracing().beginTransactionGroup();
+            TracingContext.tracing().beginTransactionGroup();
         }
-
-        String txContextKey = txContext.getGroupId() + txContextKeySuffix;
+        txContext.setGroupId(TracingContext.tracing().groupId());
+        String txContextKey = txContext.getGroupId() + ".dtx";
         attachmentCache.attach(txContextKey, txContext);
         log.debug("Start TxContext[{}]", txContext.getGroupId());
         return txContext;
