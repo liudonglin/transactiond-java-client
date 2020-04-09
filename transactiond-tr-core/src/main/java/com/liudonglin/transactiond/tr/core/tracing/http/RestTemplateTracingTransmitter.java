@@ -21,6 +21,16 @@ import java.util.Objects;
 @Order
 public class RestTemplateTracingTransmitter implements ClientHttpRequestInterceptor {
 
+    @Autowired
+    public RestTemplateTracingTransmitter(@Autowired(required = false) List<RestTemplate> restTemplates) {
+        if (Objects.nonNull(restTemplates)) {
+            restTemplates.forEach(restTemplate -> {
+                List<ClientHttpRequestInterceptor> interceptors = restTemplate.getInterceptors();
+                interceptors.add(interceptors.size(), RestTemplateTracingTransmitter.this);
+            });
+        }
+    }
+
     @Override
     @NonNull
     public ClientHttpResponse intercept(

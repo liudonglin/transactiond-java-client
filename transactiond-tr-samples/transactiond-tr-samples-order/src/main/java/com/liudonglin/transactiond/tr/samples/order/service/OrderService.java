@@ -3,6 +3,7 @@ package com.liudonglin.transactiond.tr.samples.order.service;
 import com.liudonglin.transactiond.tr.core.annotation.LcnTransaction;
 import com.liudonglin.transactiond.tr.samples.order.dao.OrderMapper;
 import com.liudonglin.transactiond.tr.samples.order.entity.Order;
+import com.liudonglin.transactiond.tr.samples.order.remote.FeignAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,9 @@ public class OrderService {
 
     @Autowired
     private OrderMapper orderDao;
+
+    @Autowired
+    private FeignAccountService feignAccountService;
 
     @LcnTransaction
     @Transactional
@@ -27,7 +31,7 @@ public class OrderService {
 
         //远程方法 扣减账户余额
         log.info("------->扣减账户开始order中");
-        //accountApi.decrease(order.getUserId(),order.getMoney());
+        feignAccountService.decrease(order.getUserId(),order.getMoney());
         log.info("------->扣减账户结束order中");
 
         log.info("------->交易结束");

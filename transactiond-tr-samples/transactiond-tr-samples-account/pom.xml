@@ -11,5 +11,12 @@
 
     <artifactId>transactiond-tr-samples-account</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.netflix.feign</groupId>
+            <artifactId>feign-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 
 </project>
