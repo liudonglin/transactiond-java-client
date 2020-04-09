@@ -17,10 +17,10 @@ public class TransactionAspect implements Ordered {
 
     private final DTXClientConfig clientConfig;
 
-    private final TransactionInterceptor interceptor;
+    private final TransactionInterceptorware interceptor;
 
     @Autowired
-    public TransactionAspect(DTXClientConfig clientConfig, TransactionInterceptor interceptor) {
+    public TransactionAspect(DTXClientConfig clientConfig, TransactionInterceptorware interceptor) {
         this.clientConfig = clientConfig;
         this.interceptor = interceptor;
     }

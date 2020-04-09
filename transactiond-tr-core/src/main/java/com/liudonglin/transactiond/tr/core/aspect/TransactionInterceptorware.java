@@ -11,12 +11,12 @@ import java.util.Objects;
 
 @Component
 @Slf4j
-public class TransactionInterceptor {
+public class TransactionInterceptorware {
 
     private final DTXGlobalContext globalContext;
 
     @Autowired
-    public TransactionInterceptor(DTXGlobalContext globalContext) {
+    public TransactionInterceptorware(DTXGlobalContext globalContext) {
         this.globalContext = globalContext;
     }
 
