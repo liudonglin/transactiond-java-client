@@ -9,6 +9,8 @@
     <packaging>pom</packaging>
     <version>1.0.0</version>
     <modules>
+        <module>transactiond-tr-core</module>
+        <module>transactiond-tr-samples</module>
     </modules>
 
     <properties>
