@@ -15,7 +15,6 @@
         <module>transactiond-tr-samples-order</module>
         <module>transactiond-tr-samples-account</module>
         <module>transactiond-tr-samples-storage</module>
-        <module>transactiond-tr-samples-api</module>
     </modules>
 
     <dependencies>
