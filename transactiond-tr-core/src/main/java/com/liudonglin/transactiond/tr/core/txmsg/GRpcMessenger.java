@@ -1,9 +1,9 @@
 package com.liudonglin.transactiond.tr.core.txmsg;
 
 import com.liudonglin.transactiond.tr.core.config.DTXClientConfig;
-import com.liudonglin.transactiond.tr.core.txmsg.proto.ActionType;
-import com.liudonglin.transactiond.tr.core.txmsg.proto.ManageServiceGrpc;
-import com.liudonglin.transactiond.tr.core.txmsg.proto.RpcMessage;
+import txmsg.ActionType;
+import txmsg.ManageServiceGrpc;
+import txmsg.RpcMessage;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;

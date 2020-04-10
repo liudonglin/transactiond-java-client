@@ -2,7 +2,7 @@ syntax = "proto3";
 
 option java_multiple_files = true;
 
-package com.liudonglin.transactiond.tr.core.txmsg.proto;
+package txmsg;
 
 enum ActionType {
     CreateGroup = 0;
