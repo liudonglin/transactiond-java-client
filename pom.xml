@@ -21,7 +21,7 @@
 
         <projectlombok.version>1.18.0</projectlombok.version>
         <netty.version>4.1.31.Final</netty.version>
-        <guava.version>19.0</guava.version>
+        <guava.version>20.0</guava.version>
         <hessian.version>4.0.38</hessian.version>
         <protostuff.version>1.6.0</protostuff.version>
         <alibaba.fastjson.version>1.2.34</alibaba.fastjson.version>
