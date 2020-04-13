@@ -2,13 +2,13 @@ package com.liudonglin.transactiond.tr.core.txmsg;
 
 import com.liudonglin.transactiond.tr.core.config.DTXClientConfig;
 import com.liudonglin.transactiond.tr.core.transaction.TransactionModel;
-import txmsg.CreateGroupMessage;
-import txmsg.JoinGroupMessage;
-import txmsg.ManageServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import txmsg.CreateGroupMessage;
+import txmsg.JoinGroupMessage;
+import txmsg.ManageServiceGrpc;
 
 @Component
 @Slf4j
@@ -42,13 +42,12 @@ public class GRpcMessenger implements ReliableMessenger  {
     }
 
     @Override
-    public void joinGroup(String groupId, String unitId, TransactionModel model, int transactionState) {
+    public void joinGroup(String groupId, String unitId, TransactionModel model) {
         JoinGroupMessage msg = JoinGroupMessage
                 .newBuilder()
                 .setGroupId(groupId)
                 .setUnitId(unitId)
                 .setModel(txmsg.TransactionModel.valueOf(model.value()))
-                .setState(transactionState)
                 .build();
         manageServiceClient.joinGroup(msg);
     }

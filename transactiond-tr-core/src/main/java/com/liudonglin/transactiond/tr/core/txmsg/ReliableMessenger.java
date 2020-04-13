@@ -20,7 +20,6 @@ public interface ReliableMessenger {
      * @param groupId           groupId
      * @param unitId            事务单元标识
      * @param model             事务模式
-     * @param transactionState  用户事务状态
      */
-    void joinGroup(String groupId, String unitId, TransactionModel model, int transactionState);
+    void joinGroup(String groupId, String unitId, TransactionModel model);
 }

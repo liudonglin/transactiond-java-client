@@ -1,5 +1,6 @@
 package com.liudonglin.transactiond.tr.core.transaction.lcn;
 
+import com.liudonglin.transactiond.tr.core.txmsg.RpcResponseState;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
@@ -16,6 +17,29 @@ public class LcnConnectionProxy implements Connection {
         this.connection = connection;
     }
 
+    /**
+     * notify connection
+     *
+     * @param state transactionState
+     * @return RpcResponseState RpcResponseState
+     */
+    public RpcResponseState notify(int state) {
+        try {
+            if (state == 1) {
+                log.debug("commit transaction type[lcn] proxy connection:{}.", this);
+                connection.commit();
+            } else {
+                log.debug("rollback transaction type[lcn] proxy connection:{}.", this);
+                connection.rollback();
+            }
+            connection.close();
+            log.debug("transaction type[lcn] proxy connection:{} closed.", this);
+            return RpcResponseState.Success;
+        } catch (Exception e) {
+            log.error(e.getLocalizedMessage(), e);
+            return RpcResponseState.Fail;
+        }
+    }
 
     @Override
     public void setAutoCommit(boolean autoCommit) throws SQLException {

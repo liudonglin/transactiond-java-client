@@ -41,6 +41,6 @@ public class JoinTransactionController implements DTXTransactionController {
     public void onBusinessCodeSuccess(DTXTransactionInfo info, Object result) {
         log.debug("join group: [GroupId: {},Method: {}]" , info.getGroupId(),info.getMethodStr());
         // join DTX group
-        reliableMessenger.joinGroup(info.getGroupId(),info.getUnitId(),info.getTransactionModel(),0);
+        reliableMessenger.joinGroup(info.getGroupId(),info.getUnitId(),info.getTransactionModel());
     }
 }
