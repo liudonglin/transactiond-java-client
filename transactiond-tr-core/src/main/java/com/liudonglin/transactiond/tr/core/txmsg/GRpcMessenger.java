@@ -1,9 +1,10 @@
 package com.liudonglin.transactiond.tr.core.txmsg;
 
 import com.liudonglin.transactiond.tr.core.config.DTXClientConfig;
-import txmsg.ActionType;
+import com.liudonglin.transactiond.tr.core.transaction.TransactionModel;
+import txmsg.CreateGroupMessage;
+import txmsg.JoinGroupMessage;
 import txmsg.ManageServiceGrpc;
-import txmsg.RpcMessage;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +34,22 @@ public class GRpcMessenger implements ReliableMessenger  {
 
     @Override
     public void createGroup(String groupId) {
-        RpcMessage msg = RpcMessage.newBuilder()
-                .setActionType(ActionType.CreateGroup)
-                .setGroupId(groupId).build();
-        RpcMessage resp = manageServiceClient.sendMessage(msg);
+        CreateGroupMessage msg = CreateGroupMessage
+                .newBuilder()
+                .setGroupId(groupId)
+                .build();
+        manageServiceClient.createGroup(msg);
+    }
+
+    @Override
+    public void joinGroup(String groupId, String unitId, TransactionModel model, int transactionState) {
+        JoinGroupMessage msg = JoinGroupMessage
+                .newBuilder()
+                .setGroupId(groupId)
+                .setUnitId(unitId)
+                .setModel(txmsg.TransactionModel.valueOf(model.value()))
+                .setState(transactionState)
+                .build();
+        manageServiceClient.joinGroup(msg);
     }
 }

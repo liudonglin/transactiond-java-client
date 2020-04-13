@@ -2,7 +2,7 @@ package com.liudonglin.transactiond.tr.core.transaction;
 
 import com.liudonglin.transactiond.tr.core.support.TransactionException;
 
-public interface DTXLocalControl {
+public interface DTXTransactionController {
 
     /**
      * 业务代码执行前

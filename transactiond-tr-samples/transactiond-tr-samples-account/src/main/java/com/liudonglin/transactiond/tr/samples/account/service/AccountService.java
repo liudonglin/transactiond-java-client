@@ -1,9 +1,11 @@
 package com.liudonglin.transactiond.tr.samples.account.service;
 
+import com.liudonglin.transactiond.tr.core.annotation.LcnTransaction;
 import com.liudonglin.transactiond.tr.samples.account.dao.AccountMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -19,6 +21,8 @@ public class AccountService {
      * @param userId 用户id
      * @param money 金额
      */
+    @LcnTransaction
+    @Transactional
     public void decrease(Long userId, BigDecimal money) throws Exception {
 
         log.info("------->扣减账户开始account中");

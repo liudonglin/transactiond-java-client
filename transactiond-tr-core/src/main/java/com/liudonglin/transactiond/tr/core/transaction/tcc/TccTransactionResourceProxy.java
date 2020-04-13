@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 
-@Service(value = "tccTransactionResourceProxy")
+@Service(value = "transactionResourceProxy_tcc")
 public class TccTransactionResourceProxy implements TransactionResourceProxy {
 
     @Override

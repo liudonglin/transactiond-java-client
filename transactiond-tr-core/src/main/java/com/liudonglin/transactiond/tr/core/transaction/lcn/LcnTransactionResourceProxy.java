@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Connection;
 
-@Service(value = "lcnTransactionResourceProxy")
+@Service(value = "transactionResourceProxy_lcn")
 public class LcnTransactionResourceProxy implements TransactionResourceProxy {
 
     private final DTXGlobalContext globalContext;

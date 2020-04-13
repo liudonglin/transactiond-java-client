@@ -52,6 +52,10 @@ public class DTXTransactionInfo {
         return transactionMethodInfo;
     }
 
+    public String getMethodStr() {
+        return this.transactionMethodInfo.getMethod().toString();
+    }
+
     public BusinessCallback getBusinessCallback() {
         return businessCallback;
     }

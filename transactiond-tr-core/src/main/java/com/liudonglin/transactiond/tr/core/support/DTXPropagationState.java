@@ -5,12 +5,12 @@ public enum DTXPropagationState {
     /**
      * 创建DTX
      */
-    CREATE("starting"),
+    CREATE("create"),
 
     /**
      * 加入DTX
      */
-    JOIN("running"),
+    JOIN("join"),
 
     /**
      * 静默加入DTX

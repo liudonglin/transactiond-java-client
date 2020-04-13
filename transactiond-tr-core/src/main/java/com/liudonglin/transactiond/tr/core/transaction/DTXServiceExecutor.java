@@ -45,7 +45,7 @@ public class DTXServiceExecutor {
         }
 
         // 获取本地分布式事务控制器
-        DTXLocalControl dtxLocalControl = txLcnBeanHelper.loadDTXLocalControl(info.getTransactionModel(), propagationState);
+        DTXTransactionController dtxLocalControl = txLcnBeanHelper.loadDTXLocalControl(info.getTransactionModel(), propagationState);
 
         // 织入事务操作
         try{
