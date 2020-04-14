@@ -1,5 +1,6 @@
 package com.liudonglin.transactiond.tr.core.transaction.lcn;
 
+import com.liudonglin.transactiond.tr.core.transaction.TransactionState;
 import com.liudonglin.transactiond.tr.core.txmsg.RpcResponseState;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,9 +24,9 @@ public class LcnConnectionProxy implements Connection {
      * @param state transactionState
      * @return RpcResponseState RpcResponseState
      */
-    public RpcResponseState notify(int state) {
+    public RpcResponseState notify(TransactionState state) {
         try {
-            if (state == 1) {
+            if (state.value()==TransactionState.Commit.value()) {
                 log.debug("commit transaction type[lcn] proxy connection:{}.", this);
                 connection.commit();
             } else {

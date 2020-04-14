@@ -5,6 +5,7 @@ import com.liudonglin.transactiond.tr.core.context.DTXLocalContext;
 import com.liudonglin.transactiond.tr.core.context.DTXContext;
 import com.liudonglin.transactiond.tr.core.transaction.DTXServiceExecutor;
 import com.liudonglin.transactiond.tr.core.transaction.DTXTransactionInfo;
+import com.liudonglin.transactiond.tr.core.transaction.TransactionModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -62,6 +63,8 @@ public class TransactionInterceptorware {
                 dtxContext.getGroupId(),
                 methodInfo,
                 business);
+
+        dtxContext.setTransactionModel(info.getTransactionModel());
 
         //LCN事务处理器
         try {

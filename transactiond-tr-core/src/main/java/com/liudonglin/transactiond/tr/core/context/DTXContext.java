@@ -32,5 +32,5 @@ public class DTXContext {
     /**
      * 上下文内分布式事务类型
      */
-    private Set<TransactionModel> transactionModels = new HashSet<>(6);
+    private TransactionModel transactionModel;
 }

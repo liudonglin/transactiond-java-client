@@ -5,8 +5,8 @@ import com.liudonglin.transactiond.tr.core.context.DTXLocalContext;
 import com.liudonglin.transactiond.tr.core.support.TransactionException;
 import com.liudonglin.transactiond.tr.core.transaction.DTXTransactionController;
 import com.liudonglin.transactiond.tr.core.transaction.DTXTransactionInfo;
+import com.liudonglin.transactiond.tr.core.transaction.TransactionControlTemplate;
 import com.liudonglin.transactiond.tr.core.transaction.TransactionState;
-import com.liudonglin.transactiond.tr.core.txmsg.ReliableMessenger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,18 +17,19 @@ public class CreateTransactionController implements DTXTransactionController {
 
     private final DTXGlobalContext globalContext;
 
-    private final ReliableMessenger reliableMessenger;
+    private final TransactionControlTemplate transactionControlTemplate;
 
     @Autowired
-    public CreateTransactionController(DTXGlobalContext globalContext, ReliableMessenger reliableMessenger) {
+    public CreateTransactionController(DTXGlobalContext globalContext,
+                                       TransactionControlTemplate transactionControlTemplate) {
         this.globalContext = globalContext;
-        this.reliableMessenger = reliableMessenger;
+        this.transactionControlTemplate = transactionControlTemplate;
     }
 
     @Override
     public void preBusinessCode(DTXTransactionInfo info) throws TransactionException {
         // 创建事务组消息
-        reliableMessenger.createGroup(info.getGroupId());
+        this.transactionControlTemplate.createGroup(info.getGroupId());
     }
 
     @Override
@@ -43,6 +44,7 @@ public class CreateTransactionController implements DTXTransactionController {
 
     @Override
     public void postBusinessCode(DTXTransactionInfo info) {
-        reliableMessenger.notifyGroup(info.getGroupId(),DTXLocalContext.cur().getSysTransactionState());
+        this.transactionControlTemplate.notifyGroup(info.getGroupId(),DTXLocalContext.cur().getSysTransactionState());
+        this.transactionControlTemplate.clearGroup(info.getGroupId(),DTXLocalContext.cur().getSysTransactionState());
     }
 }

@@ -49,9 +49,6 @@ public class DTXServiceExecutor {
 
         // 织入事务操作
         try{
-            // 记录事务类型到事务上下文
-            Set<TransactionModel> transactionTypeSet = globalContext.txContext(info.getGroupId()).getTransactionModels();
-            transactionTypeSet.add(info.getTransactionModel());
 
             dtxLocalControl.preBusinessCode(info);
 

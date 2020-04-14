@@ -1,10 +1,13 @@
 package com.liudonglin.transactiond.tr.core.transaction.lcn;
 
 import com.liudonglin.transactiond.tr.core.context.DTXGlobalContext;
+import com.liudonglin.transactiond.tr.core.context.DTXLocalContext;
 import com.liudonglin.transactiond.tr.core.transaction.DTXTransactionController;
 import com.liudonglin.transactiond.tr.core.transaction.DTXTransactionInfo;
-import com.liudonglin.transactiond.tr.core.txmsg.ReliableMessenger;
+import com.liudonglin.transactiond.tr.core.transaction.TransactionControlTemplate;
+import com.liudonglin.transactiond.tr.core.transaction.TransactionState;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service(value = "transactionController_lcn_join")
@@ -13,34 +16,32 @@ public class JoinTransactionController implements DTXTransactionController {
 
     private final DTXGlobalContext globalContext;
 
-    private final ReliableMessenger reliableMessenger;
+    private final TransactionControlTemplate transactionControlTemplate;
 
-    public JoinTransactionController(DTXGlobalContext globalContext, ReliableMessenger reliableMessenger) {
+    @Autowired
+    public JoinTransactionController(DTXGlobalContext globalContext
+            , TransactionControlTemplate transactionControlTemplate) {
         this.globalContext = globalContext;
-        this.reliableMessenger = reliableMessenger;
+        this.transactionControlTemplate = transactionControlTemplate;
     }
 
     @Override
     public void preBusinessCode(DTXTransactionInfo info) {
-        // lcn type need connection proxy
-        //DTXLocalContext.makeProxy();
     }
 
 
     @Override
     public void onBusinessCodeError(DTXTransactionInfo info, Throwable throwable) {
-        /*try {
-            transactionCleanTemplate.clean(info.getGroupId(), info.getUnitId(), info.getTransactionType(), 0);
-        } catch (TransactionClearException e) {
-            log.error("{} > clean transaction error." , Transactions.LCN);
-        }*/
+        DTXLocalContext.cur().setSysTransactionState(TransactionState.Rollback);
+
+        transactionControlTemplate.clearGroup(info.getGroupId(),TransactionState.Rollback);
     }
 
 
     @Override
     public void onBusinessCodeSuccess(DTXTransactionInfo info, Object result) {
-        log.debug("join group: [GroupId: {},Method: {}]" , info.getGroupId(),info.getMethodStr());
+        DTXLocalContext.cur().setSysTransactionState(TransactionState.Commit);
         // join DTX group
-        reliableMessenger.joinGroup(info.getGroupId(),info.getUnitId(),info.getTransactionModel());
+        transactionControlTemplate.joinGroup(info.getGroupId(),info.getUnitId(),info.getTransactionModel());
     }
 }

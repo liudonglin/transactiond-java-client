@@ -2,6 +2,7 @@ package com.liudonglin.transactiond.tr.core.transaction.lcn;
 
 import com.liudonglin.transactiond.tr.core.context.DTXGlobalContext;
 import com.liudonglin.transactiond.tr.core.transaction.TransactionCleanService;
+import com.liudonglin.transactiond.tr.core.transaction.TransactionState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class LcnTransactionCleanService implements TransactionCleanService {
     }
 
     @Override
-    public void clear(String groupId, int state) {
+    public void clear(String groupId, TransactionState state) {
         try {
             LcnConnectionProxy connectionProxy = globalContext.getLcnConnection(groupId);
             connectionProxy.notify(state);

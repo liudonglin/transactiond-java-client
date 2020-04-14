@@ -21,4 +21,12 @@ public enum TransactionState {
     public int value() {
         return this.value;
     }
+
+    public static TransactionState valueOf(int value) {
+        switch (value) {
+            case 0: return Rollback;
+            case 1: return Commit;
+            default: return null;
+        }
+    }
 }
