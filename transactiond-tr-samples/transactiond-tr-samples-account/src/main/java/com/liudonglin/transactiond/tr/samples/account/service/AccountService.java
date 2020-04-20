@@ -57,11 +57,15 @@ public class AccountService {
     }
 
     public void decreaseConfirm(Long userId, BigDecimal money) {
+        log.info("------->扣减账户开始account中");
         accountDao.decrease(userId,money);
+        log.info("------->扣减账户结束account中");
     }
 
     public void decreaseCancel(Long userId, BigDecimal money) {
+        log.info("------->添加账户开始account中");
         accountDao.increase(userId,money);
+        log.info("------->添加账户开始account中");
     }
 
 }

@@ -6,6 +6,7 @@ import com.liudonglin.transactiond.tr.core.support.TransactionException;
 import com.liudonglin.transactiond.tr.core.tracing.TracingContext;
 import com.liudonglin.transactiond.tr.core.transaction.TccTransactionInfo;
 import com.liudonglin.transactiond.tr.core.transaction.TransactionCleanService;
+import com.liudonglin.transactiond.tr.core.transaction.TransactionModel;
 import com.liudonglin.transactiond.tr.core.transaction.TransactionState;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -37,6 +38,7 @@ public class TccTransactionCleanService implements TransactionCleanService{
             Object object = applicationContext.getBean(tccInfo.getExecuteClass());
             DTXLocalContext.getOrNew().setGroupId(groupId);
             DTXLocalContext.cur().setUnitId(unitId);
+            DTXLocalContext.cur().setTransactionModel(TransactionModel.TCC);
             exeMethod = tccInfo.getExecuteClass().getMethod(
                     state == TransactionState.Success ? tccInfo.getConfirmMethod() : tccInfo.getCancelMethod(),
                     tccInfo.getMethodTypeParameter());
