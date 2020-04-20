@@ -31,7 +31,7 @@ public class OrderService {
 
         //远程方法 扣减账户余额
         log.info("------->扣减账户开始order中");
-        feignAccountService.decrease(order.getUserId(),order.getMoney());
+        feignAccountService.decreaseTcc(order.getUserId(),order.getMoney());
         log.info("------->扣减账户结束order中");
 
         log.info("------->交易结束");

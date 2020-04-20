@@ -26,7 +26,7 @@ public class LcnConnectionProxy implements Connection {
      */
     public RpcResponseState notify(TransactionState state) {
         try {
-            if (state.value()==TransactionState.Commit.value()) {
+            if (state.value()==TransactionState.Success.value()) {
                 log.debug("commit transaction type[lcn] proxy connection:{}.", this);
                 connection.commit();
             } else {

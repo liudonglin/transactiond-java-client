@@ -13,4 +13,19 @@ public interface AccountMapper {
      */
     int decrease(@Param("userId") Long userId, @Param("money") BigDecimal money);
 
+    /**
+     * 增加账户余额
+     * @param userId
+     * @param money
+     * @return
+     */
+    int increase(@Param("userId") Long userId, @Param("money") BigDecimal money);
+
+    /**
+     * 查询用户余额
+     * @param userId
+     * @return
+     */
+    BigDecimal getMoneyByUserId(@Param("userId") Long userId);
+
 }

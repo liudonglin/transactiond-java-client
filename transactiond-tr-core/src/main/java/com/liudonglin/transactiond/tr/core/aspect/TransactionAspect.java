@@ -47,6 +47,12 @@ public class TransactionAspect implements Ordered {
         return interceptor.runTransaction(dtxInfo, point::proceed);
     }
 
+    @Around("tccTransactionPointcut() && !lcnTransactionPointcut()")
+    public Object runWithTccTransaction(ProceedingJoinPoint point) throws Throwable {
+        TransactionMethodInfo dtxInfo = TransactionMethodInfo.getFromCache(point);
+        return interceptor.runTransaction(dtxInfo, point::proceed);
+    }
+
     @Override
     public int getOrder() {
         return clientConfig.getDtxAspectOrder();

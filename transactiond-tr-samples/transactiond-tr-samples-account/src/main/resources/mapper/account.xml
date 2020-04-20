@@ -14,4 +14,12 @@
         UPDATE account SET residue = residue - #{money},used = used + #{money} where user_id = #{userId} and residue>#{money};
     </update>
 
+    <update id="increase">
+        UPDATE account SET residue = residue + #{money},used = used + #{money} where user_id = #{userId} and residue>#{money};
+    </update>
+
+    <select id="getMoneyByUserId" resultType="java.math.BigDecimal">
+        Select residue from account where user_id = #{userId};
+    </select>
+
 </mapper>

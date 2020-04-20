@@ -3,6 +3,7 @@ package com.liudonglin.transactiond.tr.core.transaction;
 import com.liudonglin.transactiond.tr.core.context.DTXContext;
 import com.liudonglin.transactiond.tr.core.context.DTXGlobalContext;
 import com.liudonglin.transactiond.tr.core.support.BeanHelper;
+import com.liudonglin.transactiond.tr.core.support.TransactionException;
 import com.liudonglin.transactiond.tr.core.txmsg.ReliableMessenger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,10 +43,10 @@ public class TransactionControlTemplate {
      *
      * @param groupId groupId
      */
-    public void clearGroup(String groupId, TransactionState state) {
+    public void clearGroup(String groupId, TransactionState state, String unitId) throws TransactionException {
         DTXContext txContext = globalContext.txContext(groupId);
         TransactionCleanService clean = beanHelper.loadTransactionCleanService(txContext.getTransactionModel());
-        clean.clear(groupId, state);
+        clean.clear(groupId, state, unitId);
     }
 
 }

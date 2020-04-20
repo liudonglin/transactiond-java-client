@@ -53,7 +53,7 @@ public interface DTXTransactionController {
      *
      * @param info info
      */
-    default void postBusinessCode(DTXTransactionInfo info) {
+    default void postBusinessCode(DTXTransactionInfo info) throws TransactionException {
 
     }
 }

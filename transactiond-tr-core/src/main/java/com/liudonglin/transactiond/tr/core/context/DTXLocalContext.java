@@ -39,7 +39,7 @@ public class DTXLocalContext {
     /**
      * 系统分布式事务状态
      */
-    private TransactionState sysTransactionState = TransactionState.Commit;
+    private TransactionState sysTransactionState = TransactionState.Success;
 
     /**
      * 获取当前线程变量。不推荐用此方法，会产生NullPointerException

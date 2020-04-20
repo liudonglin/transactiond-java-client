@@ -25,4 +25,12 @@ public class AccountController {
         accountServiceImpl.decrease(userId,money);
         return "Account decrease success";
     }
+
+    @RequestMapping(value = "/decreasetcc", method = RequestMethod.GET)
+    public @ResponseBody
+    String decreaseTcc(@RequestParam("userId") Long userId, @RequestParam("money") BigDecimal money) throws Exception {
+        accountServiceImpl.decreaseTcc(userId,money);
+        return "Account decrease success";
+    }
+
 }

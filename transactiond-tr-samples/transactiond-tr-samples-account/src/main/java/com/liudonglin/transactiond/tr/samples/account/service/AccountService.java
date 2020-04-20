@@ -1,6 +1,7 @@
 package com.liudonglin.transactiond.tr.samples.account.service;
 
 import com.liudonglin.transactiond.tr.core.annotation.LcnTransaction;
+import com.liudonglin.transactiond.tr.core.annotation.TccTransaction;
 import com.liudonglin.transactiond.tr.samples.account.dao.AccountMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,24 @@ public class AccountService {
         /*LOGGER.info("修改订单状态开始");
         String mes = orderApi.update(userId, money.multiply(new BigDecimal("0.09")),0);
         LOGGER.info("修改订单状态结束：{}",mes);*/
+    }
+
+    @TccTransaction(confirmMethod = "decreaseConfirm",cancelMethod = "")
+    public void decreaseTcc(Long userId, BigDecimal money) throws Exception {
+        log.info("------->检查账户余额");
+        BigDecimal residue = accountDao.getMoneyByUserId(userId);
+        if(residue.compareTo(money)<0){
+            throw new Exception("余额不足，下单失败");
+        }
+        log.info("------->锁定账户余额");
+    }
+
+    public void decreaseConfirm(Long userId, BigDecimal money) {
+        accountDao.decrease(userId,money);
+    }
+
+    public void decreaseCancel(Long userId, BigDecimal money) {
+        accountDao.increase(userId,money);
     }
 
 }

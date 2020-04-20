@@ -19,7 +19,7 @@ public class LcnTransactionCleanService implements TransactionCleanService {
     }
 
     @Override
-    public void clear(String groupId, TransactionState state) {
+    public void clear(String groupId, TransactionState state, String unitId) {
         try {
             LcnConnectionProxy connectionProxy = globalContext.getLcnConnection(groupId);
             connectionProxy.notify(state);

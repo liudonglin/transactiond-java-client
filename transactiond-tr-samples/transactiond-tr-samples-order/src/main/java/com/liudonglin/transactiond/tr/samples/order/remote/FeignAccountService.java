@@ -10,4 +10,7 @@ public interface FeignAccountService {
     @RequestLine("GET /account/decrease?userId={userId}&money={money}")
     String decrease(@Param("userId") Long userId, @Param("money") BigDecimal money);
 
+    @RequestLine("GET /account/decreasetcc?userId={userId}&money={money}")
+    String decreaseTcc(@Param("userId") Long userId, @Param("money") BigDecimal money);
+
 }

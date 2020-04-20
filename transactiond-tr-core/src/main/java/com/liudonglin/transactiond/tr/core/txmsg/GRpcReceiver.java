@@ -4,6 +4,7 @@ import com.liudonglin.transactiond.tr.core.transaction.TransactionControlTemplat
 import com.liudonglin.transactiond.tr.core.transaction.TransactionState;
 import io.grpc.ManagedChannel;
 import io.grpc.stub.StreamObserver;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,12 +35,13 @@ public class GRpcReceiver {
                 .build();
 
         StreamObserver<NotifyUnitMessage> responseObserver = new StreamObserver<NotifyUnitMessage>() {
+            @SneakyThrows
             @Override
             public void onNext(NotifyUnitMessage responseMessage) {
                 log.debug("get notify unit");
 
                 transactionControlTemplate.clearGroup(responseMessage.getGroupId()
-                        , TransactionState.valueOf(responseMessage.getState().getNumber()));
+                        , TransactionState.valueOf(responseMessage.getState().getNumber()), responseMessage.getUnitId() );
 
             }
 

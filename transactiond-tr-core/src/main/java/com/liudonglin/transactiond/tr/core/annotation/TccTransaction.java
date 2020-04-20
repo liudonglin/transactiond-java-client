@@ -10,6 +10,13 @@ import java.lang.annotation.Target;
 public @interface TccTransaction {
 
     /**
+     * tcc事务回调执行类  该类需交由spring管理
+     *
+     * @return 作用类对象
+     */
+    Class<?> executeClass() default Void.class;
+
+    /**
      * 确认事务执行方法
      * 该方法参数需要和事务单元的参数保持一致
      *

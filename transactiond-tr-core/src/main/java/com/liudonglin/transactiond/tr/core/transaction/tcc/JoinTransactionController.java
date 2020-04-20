@@ -1,4 +1,4 @@
-package com.liudonglin.transactiond.tr.core.transaction.lcn;
+package com.liudonglin.transactiond.tr.core.transaction.tcc;
 
 import com.liudonglin.transactiond.tr.core.context.DTXGlobalContext;
 import com.liudonglin.transactiond.tr.core.context.DTXLocalContext;
@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service(value = "transactionController_lcn_join")
+@Service(value = "transactionController_tcc_join")
 @Slf4j
 public class JoinTransactionController implements DTXTransactionController {
 
@@ -26,23 +26,29 @@ public class JoinTransactionController implements DTXTransactionController {
         this.transactionControlTemplate = transactionControlTemplate;
     }
 
-    @Override
-    public void preBusinessCode(DTXTransactionInfo info) {
+    public void preBusinessCode(DTXTransactionInfo info) throws TransactionException {
+
+        // 缓存TCC事务信息，如果有必要
+        try {
+            globalContext.tccTransactionInfo(info.getUnitId(), () -> CreateTransactionController.prepareTccInfo(info))
+                    .setMethodParameter(info.getTransactionMethodInfo().getArgumentValues());
+        } catch (Throwable throwable) {
+            throw new TransactionException(throwable);
+        }
     }
 
-
-    @Override
-    public void onBusinessCodeError(DTXTransactionInfo info, Throwable throwable) throws TransactionException {
-        DTXLocalContext.cur().setSysTransactionState(TransactionState.Exception);
-
-        transactionControlTemplate.clearGroup(info.getGroupId(),TransactionState.Exception,info.getUnitId());
+    public void onBusinessCodeError(DTXTransactionInfo info, Throwable throwable) {
+        try {
+            transactionControlTemplate.clearGroup(info.getGroupId(), TransactionState.Exception,info.getUnitId());
+        } catch (Exception e) {
+            log.error("tcc > clean transaction error.", e);
+        }
     }
 
-
-    @Override
-    public void onBusinessCodeSuccess(DTXTransactionInfo info, Object result) {
+    public void onBusinessCodeSuccess(DTXTransactionInfo info, Object result) throws TransactionException {
         DTXLocalContext.cur().setSysTransactionState(TransactionState.Success);
         // join DTX group
         transactionControlTemplate.joinGroup(info.getGroupId(),info.getUnitId(),info.getTransactionModel());
     }
+
 }

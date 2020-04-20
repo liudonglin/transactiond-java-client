@@ -1,11 +1,16 @@
 package com.liudonglin.transactiond.tr.core.context;
 
 import com.liudonglin.transactiond.tr.core.config.DTXClientConfig;
+import com.liudonglin.transactiond.tr.core.support.TransactionException;
 import com.liudonglin.transactiond.tr.core.tracing.TracingContext;
+import com.liudonglin.transactiond.tr.core.support.Supplier;
+import com.liudonglin.transactiond.tr.core.transaction.TccTransactionInfo;
 import com.liudonglin.transactiond.tr.core.transaction.lcn.LcnConnectionProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Objects;
 
 @Component
 @Slf4j
@@ -58,6 +63,22 @@ public class DTXGlobalContext {
         attachmentCache.attach(txContextKey, txContext);
         log.debug("Start TxContext[{}]", txContext.getGroupId());
         return txContext;
+    }
+
+    public TccTransactionInfo tccTransactionInfo(String unitId, Supplier<TccTransactionInfo, TransactionException> supplier)
+            throws TransactionException {
+        String unitTransactionInfoKey = unitId + ".tcc.transaction";
+        if (Objects.isNull(supplier)) {
+            return attachmentCache.attachment(unitTransactionInfoKey);
+        }
+
+        if (attachmentCache.containsKey(unitTransactionInfoKey)) {
+            return attachmentCache.attachment(unitTransactionInfoKey);
+        }
+
+        TccTransactionInfo tccTransactionInfo = supplier.get();
+        attachmentCache.attach(unitTransactionInfoKey, tccTransactionInfo);
+        return tccTransactionInfo;
     }
 
 }

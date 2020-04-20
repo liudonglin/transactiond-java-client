@@ -34,17 +34,17 @@ public class CreateTransactionController implements DTXTransactionController {
 
     @Override
     public void onBusinessCodeError(DTXTransactionInfo info, Throwable throwable) {
-        DTXLocalContext.cur().setSysTransactionState(TransactionState.Rollback);
+        DTXLocalContext.cur().setSysTransactionState(TransactionState.Exception);
     }
 
     @Override
     public void onBusinessCodeSuccess(DTXTransactionInfo info, Object result) {
-        DTXLocalContext.cur().setSysTransactionState(TransactionState.Commit);
+        DTXLocalContext.cur().setSysTransactionState(TransactionState.Success);
     }
 
     @Override
-    public void postBusinessCode(DTXTransactionInfo info) {
+    public void postBusinessCode(DTXTransactionInfo info) throws TransactionException {
         this.transactionControlTemplate.notifyGroup(info.getGroupId(),DTXLocalContext.cur().getSysTransactionState());
-        this.transactionControlTemplate.clearGroup(info.getGroupId(),DTXLocalContext.cur().getSysTransactionState());
+        this.transactionControlTemplate.clearGroup(info.getGroupId(),DTXLocalContext.cur().getSysTransactionState(),info.getUnitId());
     }
 }
