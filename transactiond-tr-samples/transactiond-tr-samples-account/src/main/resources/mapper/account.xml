@@ -11,11 +11,11 @@
     </resultMap>
 
     <update id="decrease">
-        UPDATE account SET residue = residue - #{money},used = used + #{money} where user_id = #{userId} and residue>#{money};
+        UPDATE account SET residue = residue - #{money},used = used + #{money} where user_id = #{userId};
     </update>
 
     <update id="increase">
-        UPDATE account SET residue = residue + #{money},used = used + #{money} where user_id = #{userId} and residue>#{money};
+        UPDATE account SET residue = residue + #{money},used = used - #{money} where user_id = #{userId};
     </update>
 
     <select id="getMoneyByUserId" resultType="java.math.BigDecimal">

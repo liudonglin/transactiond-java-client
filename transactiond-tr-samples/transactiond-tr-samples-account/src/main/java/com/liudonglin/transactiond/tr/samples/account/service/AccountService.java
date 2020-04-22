@@ -46,19 +46,30 @@ public class AccountService {
         LOGGER.info("修改订单状态结束：{}",mes);*/
     }
 
-    @TccTransaction(confirmMethod = "decreaseConfirm",cancelMethod = "")
+    /**
+     *
+     * @param userId
+     * @param money
+     * @throws Exception
+     */
+    @TccTransaction(confirmMethod = "decreaseConfirm",cancelMethod = "decreaseCancel")
     public void decreaseTcc(Long userId, BigDecimal money) throws Exception {
+
+        /**
+         * 该处tcc模式实现得并不正确，仅测试验证回滚功能
+         */
+
         log.info("------->检查账户余额");
         BigDecimal residue = accountDao.getMoneyByUserId(userId);
         if(residue.compareTo(money)<0){
             throw new Exception("余额不足，下单失败");
         }
+        accountDao.decrease(userId,money);
         log.info("------->锁定账户余额");
     }
 
     public void decreaseConfirm(Long userId, BigDecimal money) {
         log.info("------->扣减账户开始account中");
-        accountDao.decrease(userId,money);
         log.info("------->扣减账户结束account中");
     }
 

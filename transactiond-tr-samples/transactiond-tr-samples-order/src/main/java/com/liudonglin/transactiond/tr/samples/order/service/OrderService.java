@@ -4,6 +4,7 @@ import com.liudonglin.transactiond.tr.core.annotation.LcnTransaction;
 import com.liudonglin.transactiond.tr.samples.order.dao.OrderMapper;
 import com.liudonglin.transactiond.tr.samples.order.entity.Order;
 import com.liudonglin.transactiond.tr.samples.order.remote.FeignAccountService;
+import com.liudonglin.transactiond.tr.samples.order.remote.FeignStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class OrderService {
     @Autowired
     private FeignAccountService feignAccountService;
 
+    @Autowired
+    private FeignStorageService feignStorageService;
+
     @LcnTransaction
     @Transactional
     public void create(Order order) {
@@ -27,7 +31,7 @@ public class OrderService {
         orderDao.create(order);
 
         //远程方法 扣减库存
-        //storageApi.decrease(order.getProductId(),order.getCount());
+        feignStorageService.decrease(order.getProductId(),order.getCount());
 
         //远程方法 扣减账户余额
         log.info("------->扣减账户开始order中");

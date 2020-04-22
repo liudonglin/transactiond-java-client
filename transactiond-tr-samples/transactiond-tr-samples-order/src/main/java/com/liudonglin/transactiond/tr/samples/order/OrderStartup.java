@@ -3,6 +3,7 @@ package com.liudonglin.transactiond.tr.samples.order;
 import com.liudonglin.transactiond.tr.core.config.EnableDistributedTransaction;
 import com.liudonglin.transactiond.tr.core.tracing.http.FeignTracingTransmitter;
 import com.liudonglin.transactiond.tr.samples.order.remote.FeignAccountService;
+import com.liudonglin.transactiond.tr.samples.order.remote.FeignStorageService;
 import feign.Feign;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -23,4 +24,12 @@ public class OrderStartup {
                 .requestInterceptor(new FeignTracingTransmitter())
                 .target(FeignAccountService.class, "http://localhost:6002");
     }
+
+    @Bean
+    public FeignStorageService getFeignStorageService() {
+        return Feign.builder()
+                .requestInterceptor(new FeignTracingTransmitter())
+                .target(FeignStorageService.class, "http://localhost:6003");
+    }
+
 }
